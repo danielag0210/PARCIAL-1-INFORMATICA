@@ -66,3 +66,74 @@ void crearMatriz(char* txt2[53][5], char* txt) {
         d++;
     }
 }
+
+/*______________________________ MENU INICIAL Y BORRADOR DE CONSOLA____________________________________*/
+
+void limpiar(int seconds) {
+    std::system("cls||clear"); // limpiar la consola en Windows o Unix
+    std::this_thread::sleep_for(std::chrono::seconds(seconds));
+}
+
+void menuHorario() {
+    int m, n;
+    bool a = true;
+
+    while (a == true) {
+        cout << "*----------------* Bienvenido *-------------------*" << endl;
+        cout << "1. Crear Horario - 2.Gestionar Horario  - 3. Salir: " << endl;
+        cout << "Escribe un numero del menu: ";
+        cin >> m;
+        limpiar(1.3);
+
+        if (m == 1) {
+            bool b = true;
+            while (b == true) {
+                cout << "*----------------* Crear Horario *-----------------*" << endl;
+                cout << "¿Cuántas materias vas a ver este semestre?" << endl;
+                cout << "Respuesta: ";
+                cin >> n;
+            }
+        }
+        else {
+            cout << "Por favor ingresa un número válido." << endl;
+        }
+    }
+}
+
+char** Gestionar(int n) {
+    char dias[7][11] = { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes","Sábado", "Domingo"};
+    int h1, h2;
+    cout << "¿A qué hora es tu primer clase? (por favor escríbelo en formato 24 horas): "<< endl;
+    cin  >> h1;
+    cout << "¿Hasta qué hora quieres estudiar como máximo? (por favor escríbelo en formato 24 horas): "<< endl;
+    cin >> h2;
+
+    int filas = h2 - h1;
+    if (filas < 0) {
+        filas += 24;
+    }
+    filas += 1;
+
+    int columnas = 8;
+    char **matriz = new char*[filas];
+
+    /* Reservamos memoria para cada fila de la matriz */
+    for(int i = 0; i < filas; i++) {
+        matriz[i] = new char[columnas];
+    }
+    /*  Escribos los dias de la semana en tabla */
+    for(int j = 0; j < columnas; j++) {
+        int i = 0;
+        matriz[i][j] = dias[j-1][0];
+    }
+
+   for(int i = 0; i < filas; i++) {
+        int j = 0;
+        matriz[i][j] = (h1 + i) + '0';
+    }
+
+    return matriz;
+}
+
+
+
