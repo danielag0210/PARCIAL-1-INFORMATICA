@@ -10,9 +10,11 @@
 using namespace std;
 
 unsigned long long cursor();
-char* copiartxt(unsigned long long end1);
+char* leer(unsigned long long end1);
 void crearMatriz(char* txt2[53][5], char* txt);
 void limpiar(int seconds);
 void menuHorario();
-char** Gestionar(int n);
+char** Gestionar(int filas,int h1);
+void preguntar(char** horario,int n);
+
 #endif // FUNCIONES_H
