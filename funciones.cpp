@@ -106,7 +106,7 @@ void menuHorario() {
                 cout << "*----------------* Crear Horario *-----------------*" << endl<< "¿Cuántas materias vas a ver este semestre?" << endl<< "Respuesta: ";
                 cin >> n;
                 limpiar(1.3);
-               int h1=0000,filas =8;
+               int h1=0,filas =26;
 //                cout << "¿A qué hora iniciaras a estudiar? (por favor escríbelo en formato 24 horas): "<< endl;
 //                cin  >> h1;
 //                cout << "¿Hasta qué hora quieres estudiar como máximo? (por favor escríbelo en formato 24 horas): "<< endl;
@@ -119,7 +119,6 @@ void menuHorario() {
 //                unsigned long long end = cursor();
 //                char* txt = leer(end);
 //                char* txt2[53][5] = {};
-//                preguntar(,n);
 
                 for (int i; i<= filas;i++ ){
                     int j=0;
@@ -149,7 +148,7 @@ char*** Gestionar(int filas, int h1) {
     /* Reservamos memoria para cada fila de la matriz */
     matriz = new char** [filas];
     for(int i = 0; i < filas; i++) {
-        matriz[i] = new char* [columnas];
+        matriz[i] = new char* [columnas+1];
     }
        // Reserva memoria para cada columna de la matriz
     for(int i = 0; i < filas; i++) {
@@ -164,7 +163,7 @@ char*** Gestionar(int filas, int h1) {
         int i = 0;
         int z=0;
         while(z<10){
-            matriz[i][j+1][z] = dias[j][z]; //rompe el segmento de una forma extraña
+            matriz[i][j][z] = dias[j][z]; //rompe el segmento de una forma extraña
             z++;
         }
     }
