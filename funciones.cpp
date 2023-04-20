@@ -3,7 +3,7 @@
 /*______________________________ FUNCIONES DE LECTURA____________________________________*/
 
 /* Esta función ubica el cursor al final y retorna un int de dicha posicion */
-unsigned long long cursor(){
+unsigned long long cursor() {
     unsigned long long size;
     ifstream archivo("Pensum.txt", ios::ate);
     if (archivo.is_open()) {
@@ -12,9 +12,9 @@ unsigned long long cursor(){
         return size;
     }
     else {
-         archivo.close();
-         std::cout << "Error al abrir el archivo." << endl;
-         return 0;
+        archivo.close();
+        std::cout << "Error al abrir el archivo." << endl;
+        return 0;
     }
 }
 
@@ -40,80 +40,59 @@ char* leer(unsigned long long end1) {
     return txt;
 }
 
+/*  Esta fun cion contara cuantos renglones tiene el texto */
+int contarSaltosDeLinea(char* arreglo) {
+    int j = 0;
+    for (int i = 0; arreglo[i] != '\0'; i++) {
+        if (arreglo[i] == '\n') {
+           j++;
+        }
+    }
+    return j;
+}
 /* Esta función toma el array y lo almacena en un matriz todo estará todo el pensum */
-void crearMatriz(char* txt2[53][5], char* txt) {
-    char A[100];
-    int i = 0, j = 0, d = 0, z = 0;
+char*** crearMatriz(int n, int m, int d, char* txt) {
+    char*** matriz = new char**[n];
 
-    while (txt[d] != '\0') {
-        if (txt[d] == '\n') {
-            A[z] = '\0';
-            txt2[i][j] = new char[z + 1];
-            std::copy(A, A + z + 1, txt2[i][j]);
+    for (int i = 0; i < n; i++) {
+        matriz[i] = new char*[m];
+        for (int j = 0; j < m; j++) {
+            matriz[i][j] = new char[d];
+        }
+    }
+
+    int i = 0, j = 0, k = 0, z = 0;
+
+    while (txt[z] != '\0') {
+        if (txt[z] == '\n') {
+            matriz[i][j][k] = '\0';
             i++;
             j = 0;
-            z = 0;
-        } else if (txt[d] == ';') {
-            A[z] = '\0';
-            txt2[i][j] = new char[z + 1];
-            std::copy(A, A + z + 1, txt2[i][j]);
+            k = 0;
+        } else if (txt[z] == ';') {
+            matriz[i][j][k] = '\0';
             j++;
-            z = 0;
+            k = 0;
         } else {
-            A[z] = txt[d];
-            z++;
+            matriz[i][j][k] = txt[z];
+            k++;
         }
-        d++;
+        z++;
     }
+
+    matriz[i][j][k] = '\0';
+
+    return matriz;
 }
 
-/*______________________________ MENU INICIAL Y BORRADOR DE CONSOLA____________________________________*/
-
-void limpiar(int seconds) {
-    std::system("cls||clear"); // limpiar la consola en Windows o Unix
-    std::this_thread::sleep_for(std::chrono::seconds(seconds));
-}
-
-void menuHorario() {
-    int m, n;
-    char** horario= 0x0;
-    do{
-        cout << "*----------------* Bienvenido *-------------------*" << endl<< "- 1. Crear Horario"<<endl<<"- 2. Gestionar Horario "<<endl <<"- 3. Visualizar horario "<< endl<<"- 4. Salir: " << endl<< "Escribe un numero del menu: ";
-        cin>> m;
-        limpiar(1.3);
-        switch (m) {
-        case 1:
-            do{
-                cout << "*----------------* Crear Horario *-----------------*" << endl<< "¿Cuántas materias vas a ver este semestre?" << endl<< "Respuesta: ";
-                cin >> n;
-                limpiar(1.3);
-                int h1, h2;
-                cout << "¿A qué hora iniciaras a estudiar? (por favor escríbelo en formato 24 horas): "<< endl;
-                cin  >> h1;
-                cout << "¿Hasta qué hora quieres estudiar como máximo? (por favor escríbelo en formato 24 horas): "<< endl;
-                cin >> h2;
-                int filas = h2 - h1;
-                if (filas < 0) {
-                    filas += 24;
-                }
-                filas += 1;
-                horario = Gestionar(filas,h1);
-                preguntar(horario,n);
-
-                for (int i; i<= filas;i++ ){
-                    delete[] horario[i];
-                }
-                delete horario;
-                m =0;
-            }while (m==1);
-            break;
-        case 2:
-
-            break;
-        default:
-            break;
+/* Esta funcion me imprimer cualquier matriz */
+void imprimirMatriz(char*** matriz, int filas, int columnas) {
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            cout << matriz[i][j] << " ";
         }
-    }while ((m =! 4));
+        cout << endl;
+    }
 }
 
 char** Gestionar(int filas, int h1) {
@@ -162,7 +141,95 @@ char** Gestionar(int filas, int h1) {
     return matriz;
 }
 
-void preguntar(char **horario, int n)
-{
+void limpiar(int seconds) {
+    std::system("cls||clear"); // limpiar la consola en Windows o Unix
+    std::this_thread::sleep_for(std::chrono::seconds(seconds));
+}
 
+/* Esta funcion imprime el menu */
+void menuHorario(/* char matriz*** */)
+{   int m, n;
+    char** horario= 0x0;
+    do{
+        cout << "*----------------* Bienvenido *-------------------*" << endl<< "- 1. Crear Horario"<<endl<<"- 2. Gestionar Horario "<<endl <<"- 3. Visualizar horario "<< endl<<"- 4. Salir: " << endl<< "Escribe un numero del menu: ";
+        cin>> m;
+        limpiar(1.3);
+        switch (m) {
+        case 1:
+            do{
+                cout << "*----------------* Crear Horario *-----------------*" << endl<< "¿Cuántas materias vas a ver este semestre?" << endl<< "Respuesta: ";
+                cin >> n;
+                limpiar(1.3);
+                int h1, h2;
+                cout << "¿A qué hora iniciaras a estudiar? (por favor escríbelo en formato 24 horas): "<< endl;
+                cin  >> h1;
+                cout << "¿Hasta qué hora quieres estudiar como máximo? (por favor escríbelo en formato 24 horas): "<< endl;
+                cin >> h2;
+                int filas = h2 - h1;
+                if (filas < 0) {
+                    filas += 24;
+                }
+                filas += 1;
+                horario = Gestionar(filas,h1);
+                /* preguntar(n,horario,matriz); que esta funcion retorne si la materia es correcta o no
+                si, si la pasamos a horario y que el usario ponga una fila y columna y se modifique en el horario */
+
+                for (int i; i<= filas;i++ ){
+                    delete[] horario[i];
+                }
+                delete horario;
+                m =0;
+            }while (m==1);
+            break;
+        case 2:
+
+            break;
+        default:
+            break;
+        }
+    }while ((m =! 4));
+}
+
+int preguntar(char*** matriz, int n) {
+    char codigo[9];
+    int j = 0;
+    bool encontrado = false;
+   /* while (n<=c){  c es el numero de materias a comparar */
+    while (!encontrado) {
+        cout << "Escribe el codigo de una materia: ";
+        cin >> codigo;
+
+        int longitud = 0;
+        for (int i=0; i < 9; i++) {
+            if (codigo[i] == '\0') {
+                longitud = i;
+                break;
+            }
+        }
+        if (longitud != 6) {
+            cout << "El codigo de la materia no es valido, ingresalo nuevamente." << endl;
+            continue;
+        }
+
+        /*bucar el código de materia en la matriz*/
+        for (int i = 0; i<n; i++) {
+            bool encontrado_fila = true;
+            for (int k = 0; k <= 6; k++) {
+                if (matriz[0][i][k] != codigo[k]) {
+                    encontrado_fila = false;
+                    break;}
+            }
+            if (encontrado_fila) {
+                encontrado =true;
+                j = i;
+                break;
+            }
+            }
+
+        if (!encontrado){
+            cout << "La materia no esta en el sistema." << endl;
+        }
+    }
+
+    return j; /*retorna la fila, ya sabriamos el resto de información*/
 }

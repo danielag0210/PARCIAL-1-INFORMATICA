@@ -2,27 +2,29 @@
 #include "funciones.h"
 using namespace std;
 
-int main()
-{   menuHorario();
+int main() {
     unsigned long long end = cursor();
     char* txt = leer(end);
-    char* txt2[53][5] = {};
-    crearMatriz(txt2, txt);
+    int j = contarSaltosDeLinea(txt) + 1; /* Se agrega 1 para incluir la última línea sin salto de línea */
+    char*** matriz = crearMatriz(j, 5, 100, txt);
+   /* imprimirMatriz(matriz, j, 5);  */
+    void menuHorario(/* matriz */);
 
+                          /* el primer 0 es cada linea del texto, el segundo es cada grupito separado con; / el 3 cero es cada letra, las posciones de
+                          las letras van desde 0 a  x letras, antes de cada ; hay una posicion vacio, luedo esta el /0 y luego esta la letra siguiente*/
+    char elemento = matriz[0][0][1];
+    cout << elemento << endl;
+    preguntar(matriz, j);
 
-    /*for (int x = 0; x < 53; x++) {
-        for (int y = 0; y < 5; y++) {
-            std::cout << txt2[x][y] << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    for (int x = 0; x < 53; x++) {
-        for (int y = 0; y < 5; y++) {
-            delete[] txt2[x][y];
-        }
-    }*/
-
-    return 0;
 }
+
+
+
+
+
+
+
+
+
+
 
